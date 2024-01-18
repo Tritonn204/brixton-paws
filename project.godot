@@ -1,0 +1,188 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "PlayerState",
+"class": "AirPlayerState",
+"language": "GDScript",
+"path": "res://gameplay-scripts/player/states/airborne.gd"
+}, {
+"base": "Node2D",
+"class": "Character",
+"language": "GDScript",
+"path": "res://gameplay-scripts/player/character.gd"
+}, {
+"base": "Node",
+"class": "GoPhysics",
+"language": "GDScript",
+"path": "res://addons/Utils/go_physics.gd"
+}, {
+"base": "Node",
+"class": "GoUtils",
+"language": "GDScript",
+"path": "res://addons/Utils/go-utils.gd"
+}, {
+"base": "Node",
+"class": "MiddleStateManager",
+"language": "GDScript",
+"path": "res://gameplay-scripts/state-machines/middle-state-manager.gd"
+}, {
+"base": "Node2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://gameplay-scripts/player/player.gd"
+}, {
+"base": "Resource",
+"class": "PlayerCollision",
+"language": "GDScript",
+"path": "res://gameplay-scripts/player/resources/player-collision.gd"
+}, {
+"base": "Sprite",
+"class": "PlayerSkin",
+"language": "GDScript",
+"path": "res://gameplay-scripts/player/player-skin.gd"
+}, {
+"base": "Node2D",
+"class": "PlayerState",
+"language": "GDScript",
+"path": "res://gameplay-scripts/state.gd"
+}, {
+"base": "Node2D",
+"class": "PlayerStateMachine",
+"language": "GDScript",
+"path": "res://gameplay-scripts/state-machines/state-machine.gd"
+}, {
+"base": "Resource",
+"class": "PlayerStats",
+"language": "GDScript",
+"path": "res://gameplay-scripts/player/resources/player-stats.gd"
+}, {
+"base": "PlayerState",
+"class": "RegularPlayerState",
+"language": "GDScript",
+"path": "res://gameplay-scripts/player/states/player-regular.gd"
+}, {
+"base": "StaticBody2D",
+"class": "SolidObject",
+"language": "GDScript",
+"path": "res://gameplay-scripts/nodes/solid-object.gd"
+}, {
+"base": "Resource",
+"class": "StateCollection",
+"language": "GDScript",
+"path": "res://gameplay-scripts/state-collection.gd"
+}, {
+"base": "Reference",
+"class": "Utils",
+"language": "GDScript",
+"path": "res://addons/Utils/utils.gd"
+} ]
+_global_script_class_icons={
+"AirPlayerState": "",
+"Character": "",
+"GoPhysics": "",
+"GoUtils": "",
+"MiddleStateManager": "",
+"Player": "",
+"PlayerCollision": "",
+"PlayerSkin": "",
+"PlayerState": "",
+"PlayerStateMachine": "",
+"PlayerStats": "",
+"RegularPlayerState": "",
+"SolidObject": "",
+"StateCollection": "",
+"Utils": ""
+}
+
+[application]
+
+config/name="Prototype A"
+run/main_scene="res://Test_1.tscn"
+config/icon="res://icon.png"
+
+[gui]
+
+common/drop_mouse_on_gui_input_disabled=true
+
+[importer_defaults]
+
+texture={
+"compress/bptc_ldr": 0,
+"compress/hdr_mode": 0,
+"compress/lossy_quality": 0.7,
+"compress/mode": 0,
+"compress/normal_map": 0,
+"detect_3d": false,
+"flags/anisotropic": false,
+"flags/filter": false,
+"flags/mipmaps": false,
+"flags/repeat": 0,
+"flags/srgb": 2,
+"process/HDR_as_SRGB": false,
+"process/fix_alpha_border": true,
+"process/invert_color": false,
+"process/normal_map_invert_y": false,
+"process/premult_alpha": false,
+"size_limit": 0,
+"stream": false,
+"svg/scale": 1.0
+}
+
+[input]
+
+zoom_in={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":4,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+zoom_out={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":5,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+player_left={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":65,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player_right={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":68,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player_a={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":76,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player_up={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":87,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player_down={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":83,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player_snap={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":76,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"
