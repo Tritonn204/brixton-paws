@@ -29,7 +29,8 @@ func step(player: Player, delta: float):
 #		player.shields.use_current()
 
 func animate(player: Player, _delta: float):
-	player.skin.handle_flip(player.input_direction.x)
+	if !(player.is_wall_jumping and player.time_since_jump < 0.7):
+		player.skin.handle_flip(player.input_direction.x)
 
 	if player.is_rolling:
 		player.skin.set_animation_state(PlayerSkin.ANIMATION_STATES.rolling)

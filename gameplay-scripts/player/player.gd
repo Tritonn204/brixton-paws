@@ -195,6 +195,8 @@ func handle_wall_collision(delta : float):
 			var wall_collider = paw_hit.get_collider()
 			var wall_position = paw_hit.get_collision_point()
 			
+			var surface_angle = rad2deg(wall_normal.angle())+90
+			
 			var ground_data = {
 				"normal": wall_normal,
 				"collider": wall_collider,
@@ -204,10 +206,10 @@ func handle_wall_collision(delta : float):
 			
 			var dot = velocity.dot(wall_normal)
 			var angle = acos(dot / (velocity.length() * wall_normal.length()))
-			
 	  
-			if angle >= deg2rad(45) and angle <= deg2rad(135):
+			if abs(surface_angle) >= 80 and angle >= deg2rad(45) and angle <= deg2rad(135):
 				# Wall landing logic
+				print("wall landing")
 				time_since_wall_landing = 0
 				set_ground_data(wall_normal) 
 				
@@ -294,7 +296,7 @@ func handle_overlap(delta : float):
 			deepest = ray if !deepest or deepest.penetration < ray.penetration else deepest
 			
 	if time_since_jump > 0.15 and time_since_wall_landing > 0.2 and deepest and !(is_clinging and deepest.penetration < length*0.8):
-		print("deep collision")
+#		print("deep collision")
 		set_ground_data(deepest.normal)
 		position -= direction * (deepest.penetration + 2)
 		velocity *= transform.y.normalized()
@@ -372,7 +374,7 @@ func handle_slope(delta: float):
 		var down_hill = velocity.dot(ground_normal) > 0
 		var rolling_factor = current_stats.slope_roll_down if down_hill else current_stats.slope_roll_up
 		var amount = rolling_factor if is_rolling else current_stats.cling_slope_factor if is_clinging else current_stats.slope_factor
-		velocity.x += amount * ground_normal.x * delta
+#		velocity.x += amount * ground_normal.x * delta
 
 func handle_gravity(delta: float):
 	if not __is_grounded:
@@ -399,6 +401,17 @@ func handle_friction(delta: float):
 		var amount = current_stats.cling_friction if is_clinging else current_stats.control_lock_friction if is_control_locked else current_stats.friction
 		velocity.x = move_toward(velocity.x, 0, amount * delta)
 
+func wall_jump(factor : float):
+	print(velocity)
+	is_wall_jumping = true
+	var direction = -1 if skin.flip_h else 1
+	var vertical_scale = 1.0 - current_stats.wall_jump_direction_blend
+	var horizontal_scale = current_stats.wall_jump_direction_blend
+	velocity.x += current_stats.max_jump_height*direction*horizontal_scale*factor
+	velocity.y += -current_stats.max_jump_height*vertical_scale*factor
+	skin.flip_h = !skin.flip_h
+	print(velocity)
+
 func handle_jump():
 	if __is_grounded and Input.is_action_just_pressed("player_a"):
 		is_jumping = true
@@ -408,13 +421,15 @@ func handle_jump():
 		
 		# Wall jump influence
 		if time_since_wall_landing < 0.3:
-			is_wall_jumping = true
-			var direction = -1 if skin.flip_h else 1
-			var vertical_scale = 1.0 - current_stats.wall_jump_direction_blend
-			var horizontal_scale = current_stats.wall_jump_direction_blend
-			velocity.x = current_stats.max_jump_height*direction*horizontal_scale
-			velocity.y = -current_stats.max_jump_height*vertical_scale
-			skin.flip_h = !skin.flip_h
+			wall_jump(1.1)
+		elif abs(ground_angle) >= 80:
+			var speed_check = (velocity.x > 150 and !skin.flip_h) or (velocity.x < -150 and skin.flip_h)
+			if is_clinging and abs(velocity.x) < 50:
+				wall_jump(1.1)
+			elif !is_clinging and speed_check:
+				wall_jump(1.5)
+			else:
+				velocity.y = -current_stats.max_jump_height
 		else:
 			velocity.y = -current_stats.max_jump_height
 
@@ -444,11 +459,13 @@ func get_ground_extension(speed: float, top_speed: float) -> float:
 
 func enter_ground(ground_data: Dictionary, delta : float):
 	if not __is_grounded:
+		var wall_jump_landing = is_wall_jumping
 		is_jumping = false
 		is_wall_jumping = false
 		is_rolling = false
 		__is_grounded = true
-		velocity = GoUtils.global_to_ground_velocity(velocity, ground_normal)
+		velocity = GoUtils.global_to_ground_velocity(velocity, ground_normal, wall_jump_landing, skin.flip_h)
+#		print(velocity)
 		rotate_to(rad2deg(ground_normal.angle())+90, delta)
 		handle_platform(ground_data.collider)
 		emit_signal("ground_enter")
